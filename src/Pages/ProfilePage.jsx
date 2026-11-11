@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import useProfile from "../hooks/useProfile";
 import { actions } from "../actions";
+import ProfileInfo from "../Components/profile/ProfileInfo";
 
 const ProfilePage = () => {
   const { auth } = useAuth();
@@ -42,11 +43,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <h1>
-        welcome, {state?.user?.firstName} {state?.user?.lastName}
-      </h1>
-
-      <div>you have post : {state?.posts.length}</div>
+      <ProfileInfo />
     </div>
   );
 };
