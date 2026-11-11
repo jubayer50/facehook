@@ -5,9 +5,13 @@ import NotificationIcon from "../../assets/icons/notification.svg";
 import Avatar from "../../assets/images/avatars/avatar_1.png";
 import Logout from "../auth/Logout";
 import useAuth from "../../hooks/useAuth";
+import useProfile from "../../hooks/useProfile";
 
 const Header = () => {
   const { auth } = useAuth();
+  const { state } = useProfile();
+
+  const user = state?.user ?? auth?.user;
 
   return (
     <nav className="sticky top-0 z-50 border-b border-[#3F3F3F] bg-mediumDark py-4">
@@ -34,12 +38,12 @@ const Header = () => {
 
           <button className="flex items-center ml-8! gap-3">
             <span className="text-lg font-medium lg:text-xl text-white">
-              {auth?.user?.firstName}
+              {user?.firstName}
             </span>
             <img
-              className="max-h-8 max-w-8 lg:max-h-11 lg:max-w-11"
-              src={Avatar}
-              alt=""
+              className="h-8 w-8 rounded-full object-cover"
+              src={`${import.meta.env.VITE_SERVER_BASE_URL}/${user.avatar}`}
+              alt={user?.firstName}
             />
           </button>
         </div>
