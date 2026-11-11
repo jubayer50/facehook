@@ -1,19 +1,49 @@
 import { useForm } from "react-hook-form";
 import Field from "../common/Field";
 import { useNavigate } from "react-router";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
   const submitForm = async (formData) => {
-    console.log(formData);
-    navigate("/");
+    // make an API call
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login`,
+        formData,
+      );
+
+      if (response.status === 200) {
+        const { token, user } = response.data;
+
+        if (token) {
+          const authToken = token.token;
+          const refreshToken = token.refreshToken;
+
+          console.log(`login time auth token: ${authToken}`);
+
+          setAuth({ user, authToken, refreshToken });
+
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setError("root.random", {
+        type: "random",
+        message: `User with email ${formData.email} is not found`,
+      });
+    }
   };
 
   return (
@@ -48,6 +78,8 @@ const LoginForm = () => {
           className={`w-full rounded-md border ${errors.password ? "border-red-500" : "border-[#CCCCCC]"} bg-lighterDark p-1.5 focus:outline-none lg:p-3 placeholder-gray-400 caret-white text-white`}
         />
       </Field>
+
+      <p>{errors?.root?.random?.message}</p>
 
       <Field>
         <button className="w-full rounded-md p-1.5 bg-lwsGreen font-bold text-deepDark transition-all hover:opacity-90">

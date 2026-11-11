@@ -8,3 +8,19 @@
   --color-lighterDark: #27292f;
   --font-inter: "Inter", sans-serif;
 }
+
+@layer base {
+  body {
+    @apply bg-deepDark font-inter text-gray-100;
+  }
+}
+
+@layer components {
+  .icon-btn {
+    @apply flex items-center rounded-md bg-lighterDark p-1.5 font-medium  text-white hover:bg-deepDark;
+  }
+
+  .btn-primary {
+    @apply flex items-center gap-2 rounded-md bg-lighterDark px-5 py-2.5 text-sm font-medium text-white hover:bg-deepDark lg:text-lg;
+  }
+}
